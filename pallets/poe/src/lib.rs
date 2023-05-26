@@ -10,6 +10,7 @@ mod tests;
 
 #[frame_support::pallet]
 pub mod pallet {
+	use super::*;
 	use frame_support::pallet_prelude::*;
 	use frame_system::pallet_prelude::*;
 
@@ -107,27 +108,27 @@ pub mod pallet {
 			Ok(().into())
 		}
 
-		// #[pallet::call_index(2)]
-		// #[pallet::weight(0)]
-		// pub fn transfer_claim(
-		// 	origin: OriginFor<T>,
-		// 	claim: BoundedVec<u8, T::MaxClaimLength>,
-		// 	dest: T::AccountId,
-		// ) -> DispatchResult {
-		// 	let sender = ensure_signed(origin)?;
+		#[pallet::call_index(2)]
+		#[pallet::weight(0)]
+        pub fn transfer_claim(
+			origin: OriginFor<T>, 
+			claim: BoundedVec<u8, T::MaxClaimLength>, 
+			dest: T::AccountId,
+		) -> DispatchResult {
+            let sender = ensure_signed(origin)?;
+            let (owner, _block_number) = Proofs::<T>::get(&claim).ok_or(Error::<T>::ClaimNotExist)?;
 
-		// 		.map_err(|_| Error::<T>::ClaimTooLong)?;
-		// 	let (owner, _block_number) =
-		// 		Proofs::<T>::get(&claim).ok_or(Error::<T>::ClaimNotExist)?;
+			ensure!(owner == sender, Error::<T>::NotClaimOwner);
 
-		// 	ensure!(owner == sender, Error::<T>::NotClaimOwner);
+			Proofs::<T>::insert(
+                &claim,
+                (dest, frame_system::Pallet::<T>::block_number()),
+            );
 
-		// 	Proofs::<T>::insert(&claim, (dest, frame_system::Pallet::<T>::block_number()));
+            // Emit an event.
+            // Self::deposit_event(Event::ClaimRemoved(sender, claim));
 
-		// 	// Emit an event.
-		// 	Self::deposit_event(Event::ClaimRevoked(sender, claim));
-
-		// 	Ok(().into())
-		// }
+            Ok(().into())
+        }
 	}
 }
