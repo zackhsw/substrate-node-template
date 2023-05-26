@@ -61,3 +61,14 @@ fn revoke_claim_failed_with_wrong_owner() {
 		);
 	})
 }
+
+#[test]
+fn works_for_transfer_claim() {
+	new_test_ext().execute_with(|| {
+		let claim: Vec<u8> = vec![1];
+		let dest: u64 = 2;
+
+		assert_ok!(PoeModule::create_claim(RuntimeOrigin::signed(1), claim.clone()));
+		assert_ok!(PoeModule::transfer_claim(RuntimeOrigin::signed(1), claim.clone(), dest));
+	});
+}
