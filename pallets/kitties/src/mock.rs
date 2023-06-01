@@ -53,9 +53,10 @@ impl frame_system::Config for Test {
 
 impl pallet_kitties::Config for Test {
 	type RuntimeEvent = RuntimeEvent;
+	type Randomness = Randomness;
 }
 
-impl pallet_randomness_collective_flip for Test {}
+impl pallet_randomness_collective_flip::Config for Test {}
 // Build genesis storage according to the mock runtime.
 pub fn new_test_ext() -> sp_io::TestExternalities {
 	let mut ext: sp_io::TestExternalities = frame_system::GenesisConfig::default().build_storage::<Test>().unwrap().into();
