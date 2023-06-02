@@ -15,6 +15,8 @@ fn it_works_for_create(){
         assert_eq!(KittiesModule::kitty_owner(kitty_id), Some(account_id));
         assert_eq!(KittiesModule::kitty_parents(kitty_id), None);
 
+        let kitty = KittiesModule::kitties(kitty_id).expect("kitty created");
+        System::assert_last_event(Event::KittyCreated {account_id, kitty_id, kitty}).into();
         create::NextKittyId::<Test>::set(crate::KittyId::max_value());
         assert_noop!(
             KittiesModule::create(RuntimeOrigin::signed(account_id)),
