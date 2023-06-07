@@ -258,7 +258,7 @@ pub mod pallet {
 		}
 
 		fn get_account_id() -> T::AccountId {
-			// T::PalletId::get().into_account_tra()
+			T::PalletId::get().into_account_truncating()
 		}
 	}
 }
