@@ -14,8 +14,17 @@ mod tests;
 #[cfg(feature = "runtime-benchmarks")]
 mod benchmarking;
 
+use sp_runtime::{
+	offchain::{
+		storage::{StorageValueRef},
+	},
+	traits::Zero,
+};
+
 #[frame_support::pallet]
 pub mod pallet {
+	use super::*;
+	use frame_support::inherent::Vec;
 	use frame_support::pallet_prelude::*;
 	use frame_system::pallet_prelude::*;
 
@@ -100,4 +109,47 @@ pub mod pallet {
 			}
 		}
 	}
+
+	// #[pallet::hooks]
+	// impl<T: Config> Hooks<BlockNumberFor<T>> for Pallet<T> {
+	// 	fn offchain_worker(block_number: T::BlockNumber){
+	// 		log::info!("OCW ==>Hello world from offchain workers!: {:?}", block_number);
+	// 	}
+
+	// 	fn on_initialize(_n: T::BlockNumber) -> Weight {
+	// 		log::info!("OCW ==> in on_initialize!");
+	// 		Weight::from_parts(0,0)
+	// 	}
+	// 	fn on_finalize(_n: T::BlockNumber) {
+	// 		log::info!("OCW ==> on_finalize!");
+	// 	}
+	// 	fn on_idle(_n: T::BlockNumber, _remaining_weight: weight) -> Weight {
+	// 		log::info!("OCW ==>on_idle!");
+	// 		Weight::from_parts(0,0)
+	// 	}
+	// }
+
+	// #[pallet::hooks]
+	// impl<T: Config> Hooks<BlockNumberFor<T>> for Pallet<T> {
+	// 	fn offchain_worker(block_number: T::BlockNumber){
+	// 		log::info!("OCW ==>Hello world from offchain workers!: {:?}", block_number);
+
+	// 		let timeout = sp_io::offchain::timestamp().add(sp_runtime::offchain::Duration::from_millis(8000));
+
+	// 		sp_io::offchain::sleep_until(timeout);
+	// 		log::info!("OCW ==> Leave from offchain workers!: {:?}", block_number);
+	// 	}
+	// }
+	#[pallet::hooks]
+	impl<T: Config> Hooks<BlockNumberFor<T>> for Pallet<T> {
+		fn offchain_worker(block_number: T::BlockNumber){
+			log::info!("OCW ==>Hello world from offchain workers!: {:?}", block_number);
+
+			let timeout = sp_io::offchain::timestamp().add(sp_runtime::offchain::Duration::from_millis(8000));
+
+			sp_io::offchain::sleep_until(timeout);
+			log::info!("OCW ==> Leave from offchain workers!: {:?}", block_number);
+		}
+	}
+
 }
