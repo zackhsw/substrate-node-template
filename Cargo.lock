@@ -4246,6 +4246,7 @@ dependencies = [
  "pallet-balances",
  "pallet-grandpa",
  "pallet-insecure-randomness-collective-flip",
+ "pallet-kdniao",
  "pallet-kitties",
  "pallet-poe",
  "pallet-sudo",
@@ -4547,6 +4548,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "pallet-kdniao"
+version = "4.0.0-dev"
+dependencies = [
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "log",
+ "parity-scale-codec",
+ "scale-info",
+ "serde",
+ "serde_json",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
 name = "pallet-kitties"
 version = "4.0.0-dev"
 dependencies = [
@@ -4621,9 +4640,12 @@ dependencies = [
  "log",
  "parity-scale-codec",
  "scale-info",
+ "serde",
+ "serde_json",
  "sp-core",
  "sp-io",
  "sp-runtime",
+ "sp-std",
 ]
 
 [[package]]
